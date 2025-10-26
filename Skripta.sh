@@ -55,6 +55,7 @@ echo "====================================="
 echo " Starting setup "
 echo "====================================="
 
+docker_preconfig
 install_packages
 copy_file
 start_service
