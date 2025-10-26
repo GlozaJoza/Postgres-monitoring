@@ -64,3 +64,4 @@ open_browser_tabs
 
 echo
 echo "[DONE] Setup completed successfully!"
+exit 0
