@@ -1,6 +1,6 @@
 # 🐘 Postgres Monitoring Stack (Docker Compose)
 
-Ovaj repozitorijum sadrži **Docker Compose** bazirani monitoring stack za **PostgreSQL**, sa dodatnim **Keepalived** servisom za testiranje visoke dostupnosti (HA).
+Ovaj repozitorijum sadrži **Docker Compose** bazirani monitoring stack za **PostgreSQL**, sa dodatnim **Keepalived** servisom.
 
 ## 🧩 Uključeni servisi
 
