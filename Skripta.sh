@@ -17,12 +17,6 @@ install_packages() {
     sudo apt install -y keepalived docker docker-compose
 }
 
-add_user_to_docker() {
-    echo "[INFO] Ensuring $USERNAME is in docker group..."
-    sudo usermod -aG docker "$USERNAME"
-    newgrp docker
-	echo "[INFO] Docker group refreshed for $USERNAME."
-}
 
 copy_file() {
     echo "[INFO] Moving $FILE_TO_MOVE to $DEST_FOLDER..."
@@ -54,7 +48,6 @@ echo " Starting setup as user: $USERNAME"
 echo "====================================="
 
 install_packages
-add_user_to_docker
 copy_file
 start_service
 start_docker_compose
