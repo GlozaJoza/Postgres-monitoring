@@ -101,6 +101,7 @@ services:
         container_name: kibana
         environment:
             - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+            - SERVER_DEFAULTROUTE=/app/dashboards#/view/158be870-87f4-11e7-ad9c-db80de0bf8d3-ecs?_g=(filters:!(),refreshInterval:(pause:!t,value:60000),time:(from:now-15m,to:now))
         ports:
             - 5601:5601
         networks:
@@ -116,6 +117,7 @@ services:
         volumes:
             - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
             - ./postgresql:/data/postgres:ro
+            - ./filebeat/modules.d:/usr/share/filebeat/modules.d:ro
             - /var/lib/docker/containers:/var/lib/docker/containers:ro
             - /var/run/docker.sock:/var/run/docker.sock:ro
         environment:
