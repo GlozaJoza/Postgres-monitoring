@@ -3,7 +3,7 @@ set -e  # Exit immediately if any command fails
 
 # ==== CONFIG ====
 USERNAME="$USER"      
-FILE_TO_MOVE="./keepalived/keepalived.conf"
+FILE_TO_MOVE="/keepalived/keepalived.conf"
 DEST_FOLDER="/etc/keepalived/"
 SERVICE_NAME="keepalived"
 BROWSER="firefox"
