@@ -54,10 +54,10 @@ EONG
 }
 
 
-move_file() {
+copy_file() {
     echo "[INFO] Moving $FILE_TO_MOVE to $DEST_FOLDER..."
     sudo mkdir -p "$DEST_FOLDER"
-    sudo mv -f "$TARGET_FOLDER/$FILE_TO_MOVE" "$DEST_FOLDER"
+    sudo cp -f "$TARGET_FOLDER/$FILE_TO_MOVE" "$DEST_FOLDER"
 }
 
 start_service() {
@@ -85,7 +85,7 @@ echo "====================================="
 add_user_to_sudoers
 install_packages
 add_user_to_docker
-move_file
+copy_file
 start_service
 start_docker_compose
 open_browser_tabs
