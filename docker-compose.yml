@@ -1,0 +1,145 @@
+services:
+    postgresql:
+        image: postgres
+        container_name: postgresql
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: 12345
+            POSTGRES_DB: testdb
+            PGDATA: /data/postgres
+        healthcheck:
+            test: ["CMD-SHELL", "pg_isready -d testdb -U user"]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+        command:  >
+              postgres
+              -c logging_collector=on
+              -c log_statement=all
+              -c log_line_prefix='%m [%p] %q%u@%d '
+              -c log_duration=on
+              -c log_min_duration_statement=0
+              -c log_destination=csvlog
+        volumes:
+            - ./postgresql:/data/postgres
+            - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql
+        ports:
+            - "5432:5432"
+        restart: unless-stopped
+        networks:
+            - monitoring
+            
+    prometheus:
+        image: prom/prometheus
+        container_name: prometheus
+        volumes:
+          - ./prometheus:/etc/prometheus
+          - prometheus:/prometheus
+        command:
+          - '--config.file=/etc/prometheus/prometheus.yml'
+          - '--storage.tsdb.path=/prometheus'
+          - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+          - '--web.console.templates=/usr/share/prometheus/consoles'
+        ports:
+          - "9090:9090"
+        restart: unless-stopped
+        networks:
+            - monitoring
+       
+    postgresql-exporter:
+        image: prometheuscommunity/postgres-exporter
+        container_name: postgresql-exporter
+        ports:
+            - "9187:9187"
+        environment:
+            DATA_SOURCE_NAME: "postgres://user:12345@postgresql/testdb?sslmode=disable"
+        depends_on:
+            prometheus:
+                condition: service_started
+            postgresql:
+                condition: service_healthy
+        restart: unless-stopped
+        networks:
+            - monitoring
+
+          
+    grafana:
+        image: grafana/grafana
+        container_name: grafana
+        ports:
+          - 3000:3000
+        restart: unless-stopped
+        environment:
+          GF_SECURITY_ADMIN_PASSWORD: grafana
+          GF_USERS_ALLOW_SIGN_UP: 0
+          GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/etc/grafana/provisioning/dashboards/PostgreSQL Database-1761411647498.json"
+        volumes:
+          - grafana:/var/lib/grafana
+          - ./grafana/provisioning:/etc/grafana/provisioning
+        depends_on:
+            - prometheus
+        networks:
+            - monitoring
+
+
+    elasticsearch:
+        image: docker.elastic.co/elasticsearch/elasticsearch-wolfi:9.2.0
+        container_name: elasticsearch
+        environment:
+            - node.name=es01
+            - cluster.name=es-docker-cluster
+            - discovery.type=single-node
+            - xpack.security.enabled=false
+            - xpack.security.enrollment.enabled=false
+        volumes:
+            - elasticData:/usr/share/elasticsearch/data
+        ports:
+            - 9200:9200
+        networks:
+            - monitoring
+
+    kibana:
+        image: docker.elastic.co/kibana/kibana-wolfi:9.2.0
+        container_name: kibana
+        environment:
+            - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+        ports:
+            - 5601:5601
+        networks:
+            - monitoring
+        depends_on:
+            - elasticsearch
+
+
+    filebeat:
+        image: docker.elastic.co/beats/filebeat:9.2.0
+        container_name: filebeat
+        user: root
+        command: ["--strict.perms=false"]
+        volumes:
+            - ./filebeat/filebeat.yml:/usr/share/filebeat/filebeat.yml:ro
+            - ./postgresql:/data/postgres:ro
+            - /var/lib/docker/containers:/var/lib/docker/containers:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+        environment:
+            - ELASTICSEARCH_HOST=http://elasticsearch:9200
+            - KIBANA_HOST=http://kibana:5601
+        networks:
+            - monitoring
+        depends_on:
+            - postgresql
+        restart: unless-stopped
+        
+        
+volumes:
+    prometheus: {}
+    grafana: {}
+    postgresql: {}
+    postgresql-exporter: {}
+    elasticData:
+        driver: local
+    filebeat: {}
+
+networks:
+    monitoring:
+        driver: bridge

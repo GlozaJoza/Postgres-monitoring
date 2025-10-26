@@ -1,0 +1,15 @@
+{
+  "index_patterns": ["postgres-*"],
+  "settings": {
+    "number_of_shards": 1
+  },
+  "mappings": {
+    "properties": {
+      "@timestamp": { "type": "date" },
+      "message": { "type": "text" },
+      "log.level": { "type": "keyword" },
+      "postgres.database": { "type": "keyword" },
+      "postgres.user": { "type": "keyword" }
+    }
+  }
+}

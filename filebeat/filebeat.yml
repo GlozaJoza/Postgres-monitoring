@@ -1,0 +1,15 @@
+output.elasticsearch:
+  hosts: ["http://elasticsearch:9200"]
+
+filebeat.modules:
+    - module: postgresql
+      log:
+        enabled: true
+        var.paths: ["/data/postgres/log/*.csv"]
+
+# Optional, to avoid permissions issue
+strict.perms: false
+
+logging.level: debug
+logging.to_files: false
+logging.to_stderr: true
