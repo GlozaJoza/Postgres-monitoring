@@ -23,7 +23,7 @@ Ovaj stack uključuje sledeće servise:
     ```bash
    sudo groupadd docker
    sudo usermod -aG docker $USER
-Log out/restart PC
+   newgrp docker
     
 2. Kloniraj repozitorijum:
    ```bash
