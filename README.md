@@ -15,7 +15,7 @@ Ovaj stack uključuje sledeće servise:
 | **Elasticsearch** | Skladištenje logova i podataka za analitiku |
 | **Kibana** | UI za pretragu i analizu logova iz Elasticsearch-a |
 | **Filebeat** | Prikuplja i prosleđuje logove u Elasticsearch |
-| **Keepalived** | Simulira failover i HA scenarije za testiranje |
+| **Keepalived** | Stvaranje virtualne IP adrese |
 
 ## ⚙️ Pokretanje
 
