@@ -41,7 +41,9 @@ copy_file() {
 
 start_service() {
     echo "[INFO] Starting $SERVICE_NAME..."
-    sudo systemctl start "$SERVICE_NAME" 
+    sudo systemctl enable "$SERVICE_NAME" || true
+    sudo systemctl restart "$SERVICE_NAME"
+    sudo systemctl status "$SERVICE_NAME" --no-pager
 }
 
 start_docker_compose() {
