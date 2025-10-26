@@ -19,14 +19,20 @@ Ovaj stack uključuje sledeće servise:
 
 ## ⚙️ Pokretanje
 
-1. Kloniraj repozitorijum:
+1. Dodaj korisnika u docker grupu:
+    ```bash
+   sudo groupadd docker
+   sudo usermod -aG docker $USER
+Log out/restart PC
+    
+2. Kloniraj repozitorijum:
    ```bash
-   git clone https://github.com/tvoj-repo/postgres-monitoring-stack.git
-   cd postgres-monitoring-stack
-2. Daj izvršna prava skripti:
+   git clone https://github.com/tvoj-repo/postgres-monitoring-stack.git && cd postgres-monitoring-stack
+
+3. Daj izvršna prava skripti:
    ```bash
    chmod +x Skripta.sh
-3. Pokreni skriptu:
+4. Pokreni skriptu:
    ```bash
    ./Skripta.sh
 
