@@ -42,7 +42,7 @@ start_service() {
 start_docker_compose() {
     echo "[INFO] Starting Docker Compose..."
     sudo systemctl start docker
-    docker-compose up -d
+    docker compose up -d
 }
 
 open_browser_tabs() {
