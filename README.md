@@ -27,7 +27,7 @@ Ovaj stack uključuje sledeće servise:
     
 2. Kloniraj repozitorijum:
    ```bash
-   git clone https://github.com/tvoj-repo/postgres-monitoring-stack.git && cd postgres-monitoring-stack
+   git clone https://github.com/GlozaJoza/Postgres-monitoring.git && cd Postgres-monitoring
 
 3. Daj izvršna prava skripti:
    ```bash
