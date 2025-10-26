@@ -1,8 +1,6 @@
 #!/bin/bash
-set -e  # Exit immediately if any command fails
-
-# ==== CONFIG ====
-USERNAME="$USER"      
+set -e
+   
 FILE_TO_MOVE="keepalived/keepalived.conf"
 DEST_FOLDER="/etc/keepalived/"
 SERVICE_NAME="keepalived"
@@ -10,11 +8,10 @@ BROWSER="firefox"
 URL1="http://localhost:3000"
 URL2="http://localhost:5601"
 
-# ==== FUNCTIONS ====
 
 docker_preconfig() {
 	echo "[INFO] Docker prerequiements"
-	sudo apt-get update
+	sudo apt-get update -y
 	sudo apt-get install ca-certificates curl
 	sudo install -m 0755 -d /etc/apt/keyrings
 	sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
@@ -23,15 +20,13 @@ docker_preconfig() {
 	  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
 	  $(. /etc/os-release && echo "${UBUNTU_CODENAME:-$VERSION_CODENAME}") stable" | \
 	  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-	sudo apt-get update
-	
+	sudo apt-get update -y
 }
 
 install_packages() {
     echo "[INFO] Installing required packages..."
     sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin keepalived
 }
-
 
 copy_file() {
     echo "[INFO] Moving $FILE_TO_MOVE to $DEST_FOLDER..."
@@ -41,9 +36,7 @@ copy_file() {
 
 start_service() {
     echo "[INFO] Starting $SERVICE_NAME..."
-    sudo systemctl enable "$SERVICE_NAME" || true
-    sudo systemctl restart "$SERVICE_NAME"
-    sudo systemctl status "$SERVICE_NAME" --no-pager
+    sudo systemctl start "$SERVICE_NAME" 
 }
 
 start_docker_compose() {
@@ -59,7 +52,7 @@ open_browser_tabs() {
 
 # ==== MAIN ====
 echo "====================================="
-echo " Starting setup as user: $USERNAME"
+echo " Starting setup "
 echo "====================================="
 
 install_packages
@@ -70,4 +63,3 @@ open_browser_tabs
 
 echo
 echo "[DONE] Setup completed successfully!"
-echo "User '$USERNAME' now has sudo + docker access without logout or password prompts."
