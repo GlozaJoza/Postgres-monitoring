@@ -61,7 +61,6 @@ services:
         restart: unless-stopped
         networks:
             - monitoring
-
           
     grafana:
         image: grafana/grafana
@@ -80,7 +79,6 @@ services:
             - prometheus
         networks:
             - monitoring
-
 
     elasticsearch:
         image: docker.elastic.co/elasticsearch/elasticsearch-wolfi:9.2.0
@@ -110,7 +108,6 @@ services:
         depends_on:
             - elasticsearch
 
-
     filebeat:
         image: docker.elastic.co/beats/filebeat:9.2.0
         container_name: filebeat
@@ -129,7 +126,6 @@ services:
         depends_on:
             - postgresql
         restart: unless-stopped
-        
         
 volumes:
     prometheus: {}
