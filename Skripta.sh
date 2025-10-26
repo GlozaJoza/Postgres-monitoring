@@ -57,7 +57,7 @@ EONG
 copy_file() {
     echo "[INFO] Moving $FILE_TO_MOVE to $DEST_FOLDER..."
     sudo mkdir -p "$DEST_FOLDER"
-    sudo cp -f "$TARGET_FOLDER/$FILE_TO_MOVE" "$DEST_FOLDER"
+    sudo cp -f "$FILE_TO_MOVE" "$DEST_FOLDER"
 }
 
 start_service() {
